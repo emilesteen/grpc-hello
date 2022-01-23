@@ -8,7 +8,7 @@ class HelloServer(private val port: Int) {
     private val server: Server = ServerBuilder
         .forPort(port)
         .addService(ProtoReflectionService.newInstance())
-        .addService(BackendService())
+        .addService(HelloService())
         .build()
 
     fun start(): HelloServer {
@@ -40,7 +40,7 @@ class HelloServer(private val port: Int) {
     }
 }
 
-class BackendService : HelloGrpcKt.HelloCoroutineImplBase() {
+class HelloService : HelloGrpcKt.HelloCoroutineImplBase() {
     override suspend fun sayHello(request: HelloOuterClass.sayHelloRequest): HelloOuterClass.sayHelloResponse {
         return HelloOuterClass.sayHelloResponse.newBuilder()
             .setHello("Hello, ${request.name}")
